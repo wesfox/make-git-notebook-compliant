@@ -14,24 +14,12 @@ MacOS
 brew install jq
 ```
 
-### Create the following alias (if it does not already exist) in you .bashrc or .zshrc
-
-```sh
-alias nbstrip_jq="jq --indent 1 \
-    '(.cells[] | select(has(\"outputs\")) | .outputs) = []  \
-    | (.cells[] | select(has(\"execution_count\")) | .execution_count) = null  \
-    | .metadata = {\"language_info\": {\"name\": \"python\", \"pygments_lexer\": \"ipython3\"}} \
-    | .cells[].metadata = {} \
-    '"
-```
-
-### Create a .gitattributes with the following content
-
+### Create a .git/.gitattributes with the following content
 ```conf
 *.ipynb filter=nbstrip_full
 ```
 
-### Modify the .git/conf file adding the following into [core] and [filter "nbstrip_full"] content
+### Modify the .git/config file adding the following into [core] and [filter "nbstrip_full"] content
 ```conf
 [core]
 attributesfile = .gitattributes
@@ -47,3 +35,16 @@ smudge = cat
 required = true
 ```
 
+
+### (optional) Create the following alias (if it does not already exist) in you .bashrc or .zshrc
+
+This alias allows you to execute the command used by git through the `nbstrip_jq` command.
+
+```sh
+alias nbstrip_jq="jq --indent 1 \
+    '(.cells[] | select(has(\"outputs\")) | .outputs) = []  \
+    | (.cells[] | select(has(\"execution_count\")) | .execution_count) = null  \
+    | .metadata = {\"language_info\": {\"name\": \"python\", \"pygments_lexer\": \"ipython3\"}} \
+    | .cells[].metadata = {} \
+    '"
+```
